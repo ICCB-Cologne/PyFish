@@ -18,7 +18,7 @@ setup(
     keywords="plot genomics visualization",
     packages=['pyfish', 'tests'],
     install_requires=[
-        'numpy>=1.0',
+        'numpy>=1.14',
         'pandas>=1.0',
         'scipy>=1.0',
         'matplotlib>=3.0'

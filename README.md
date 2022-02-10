@@ -1,29 +1,26 @@
-# README #
+# PyFish
 
-This README would normally document whatever steps are necessary to get your application up and running.
+PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wikipedia.org/wiki/Muller_plot).
 
-### What is this repository for? ###
+![Example plot](./docs/fish.png)
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Primary features
+* polynomial interpolation
+* curve smoothing
+* high performance
+* works with low and high density data
 
-### How do I get set up? ###
+## Getting Started
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+The package can be installed using Pip:
 
-### Contribution guidelines ###
+```
+pip install PyFish
+```
 
-* Writing tests
-* Code review
-* Other guidelines
+## Input
 
-### Who do I talk to? ###
+The program takes two tables:
+* one describing the size of individual subgroups at given points in time, referred to as _populations_,
+* one describing the parent-child relationships between the subgroups, referred to as _parent tree_.
 
-* Repo owner or admin
-* Other community or team contact

@@ -207,10 +207,12 @@ def process_data(pops_df, parent_df,
     return pops_stack, steps, colors, pop_max
 
 
-def setup_figure(width=1920, height=1080):
+def setup_figure(width=1920, height=1080, absolute=False):
     """Create figure with specified height and width."""
     dpi = (width + height) // 20
     plt.figure(figsize=(width // dpi, height // dpi), dpi=dpi)
+    plt.xlabel('steps')
+    plt.ylabel('population' if absolute else 'proportion')
 
 
 if __name__ == '__main__':
@@ -253,6 +255,6 @@ if __name__ == '__main__':
                         args.interpolation, args.absolute, args.smooth, args.seed, args.cmap)
 
     # Plot
-    setup_figure(args.width, args.height)
+    setup_figure(args.width, args.height, args.absolute)
     fish_plot(*data)
     plt.savefig(args.output)
