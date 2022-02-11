@@ -10,6 +10,8 @@ PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wiki
 * high performance
 * works with low and high density data
 
+PyFish can be used either as a stand-alone tool or as a plotting library.
+
 ## Installation
 
 PyFish requires Python >= 3.8
@@ -40,15 +42,15 @@ An example populations table:
 | 0   | 0    | 100 |
 | 0   | 1    | 40  |
 | 0   | 2    | 20  |
-| 0   | 3    | 10  |
-| 1   | 1    | 10  |
+| 0   | 3    | 0   |
+| 1   | 0    | 10  |
 | 1   | 3    | 50  |
 | 1   | 5    | 100 |
-| 2   | 4    | 0   |
+| 2   | 4    | 20  |
 | 2   | 5    | 50  |
 | 3   | 0    | 10  |
-| 3   | 1    | 10  |
-| 3   | 5    | 20  |
+| 3   | 1    | 20  |
+| 3   | 5    | 10  |
 
 ### Parent Tree
 
@@ -66,42 +68,110 @@ An example parent tree:
 
 **Note: there must be exactly one node in the parent tree that has no parent. This is the root (0 in the example above).**
 
-## Execution
 
-PyFish can be used either as a stand-alone tool or as a plotting library.
-
-### Tool 
+## Tool 
 
 We provide example data. From the root folder of the project call: 
 
 `pyfish tests/populations.csv tests/parent_tree.csv out.png`
 
-This will create a plot called `out.png` in the folder. 
+This will create a plot called `out.png` in the folder.  
 
-### Library
+Additional execution parameters are described below.
 
+## Library
 
+The populations and parent_tree tables can be constructed directly as dataframes.
+
+The library contains three public functions:
+
+* `process_data` Takes the input data and parameters and creates data suitable for plotting. 
+Additional arguments match the parameters as described below.
+* `setup_figure` Resizes the figure and adds labels for axes.  
+* `fish_plot` Calls the plotting function on the input parameters.
+
+### Example:
+``` 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from pyfish import fish_plot, process_data, setup_figure
+
+populations = np.array([[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 0], [1, 0, 10], [1, 3, 50], 
+    [1, 5, 100], [2, 4, 20], [2, 5, 50], [3, 0, 10], [3, 1, 20], [3, 5, 10]])
+parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
+populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
+parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
+data = process_data(populations_df, parent_tree_df)
+setup_figure()
+fish_plot(*data)
+plt.show()
+```
 
 ## Parameters
 
 ### `-a, --absolute`
 
-Plots absolute population counts at each step 
+Plots absolute population counts at each step.
 
-| Base                          | Absolute                         |
+| Base                          | --absolute                       |
 |-------------------------------|----------------------------------|
 | ![Base plot](./docs/base.png) | ![Absolute plot](./docs/abs.png) |
 
-* `-I int` 
-* `-S float`
-* `-F int+`, `-L int+`
-* `-M string`
-* `-R int+`
-* `-W int+`, `-H int+`
+### `-I, --interpolate int`
 
+Fills in missing values by interpolation by a polynomial of the given degree. 
+If a value is not given, each population is set to 0 at the first and last step.
+
+| Base                          | --interpolate 2                                |
+|-------------------------------|------------------------------------------------|
+| ![Base plot](./docs/test.png) | ![Interpolated plot](./docs/interpolation.png) |
+
+### `-S, --smooth float`
+
+Smoothing of the graph using Gaussian filter. 
+The parameter value is the standard deviation of the kernel. 
+The bigger the population the bigger the value should be.
+
+**NOTE: If the population values are sparse, using smoothing without interpolation might lead to misleading population sizes.**
+
+| Base                          | --smooth 50                         |
+|-------------------------------|-------------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/smooth.png) |
+
+### `-F, --first int+`, `-L, --last int+`
+
+Only limits the steps to the range `[first, last]` inclusive.
+
+| Base                          | --first 4000 --last 4500           |
+|-------------------------------|------------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/bound.png) |
+
+### `-M, --cmap string`
+
+Use the specified [matplotlib colormap](https://matplotlib.org/stable/tutorials/colors/colormaps.html). 
+
+Default colormap is rainbow.
+
+| Base                          | --cmap viridis                   |
+|-------------------------------|----------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/map.png) |
+
+
+### `-R, --seed int+`
+
+Specifies the seed for the randomization of colors.
+
+| Base                          | --seed 2022                       |
+|-------------------------------|-----------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/seed.png) |
+
+### `-W, --width int+`, `-H, --height int+`
+
+Specifies the dimensions for the output image. The size is including the axes' labels.
 
 ## Contact
-Email questions, feature requests and bug reports to Adam Streck, adam.streck@mdc-berlin.de.
+Email questions, feature requests and bug reports to Adam Streck, `adam.streck@mdc-berlin.de`.
 
 ## License
 PyFish is available under the MIT License.

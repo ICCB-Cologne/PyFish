@@ -96,19 +96,6 @@ def test_all_parameters(absolute, interpolation, smooth):
     plt.close()
 
 
-def test_pyfish_empty_timestep_error():
-    populations = np.array(
-        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],
-         [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
-
-    parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
-
-    populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
-    parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
-
-    with pytest.raises(ValueError):
-        fish_plot(*process_data(populations_df, parent_tree_df))
-
 
 def test_pyfish_missing_tree_root_error():
     populations = np.array(
