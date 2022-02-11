@@ -12,7 +12,7 @@ setup(
     author="Adam Streck, Tom Kaufmann",
     author_email="adam.streck@mdc-berlin.de",
     description="Plotting tool for evolutionary population dynamics. Creates a Fish (Muller) plot.",
-    long_description=read('README'),
+    long_description=read('README.md'),
     long_description_content_type='text/markdown',
     license="MIT",
     keywords="plot genomics visualization",
