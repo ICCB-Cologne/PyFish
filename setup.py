@@ -1,4 +1,5 @@
 import os
+
 from setuptools import setup
 
 
@@ -20,7 +21,7 @@ setup(
     packages=['pyfish', 'tests'],
     entry_points={
         'console_scripts': [
-            'pyfish = pyfish.pyfish:main',
+            'pyfish = pyfish.main:main',
         ],
     },
     install_requires=[

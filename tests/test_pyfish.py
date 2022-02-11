@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from matplotlib.testing.compare import compare_images
-from pyfish.pyfish import fish_plot, process_data, setup_figure
+from pyfish import fish_plot, process_data, setup_figure
 
 
 def try_to_delete_file(file_name):

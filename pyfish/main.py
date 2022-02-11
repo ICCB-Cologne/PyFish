@@ -3,7 +3,8 @@ import argparse
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from pyfish.core import fish_plot, process_data, setup_figure
+from pyfish import fish_plot, process_data, setup_figure
+
 
 def main():
     parser = argparse.ArgumentParser(description='Create a Fish (Muller) plot '
