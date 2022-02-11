@@ -1,7 +1,4 @@
-#!/usr/bin/env python
 """Library to create Fish (Muller) plots."""
-
-import argparse
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,7 +7,7 @@ from matplotlib import cm
 from scipy.ndimage import gaussian_filter
 
 
-def stackplot(x, *args, ax=None, colors=None, labels=(), **kwargs):
+def _stackplot(x, *args, ax=None, colors=None, labels=(), **kwargs):
     """Draw a stacked area plot.
 
     Taken largely from the matplotlib implementation except that the keywords `edgecolor` and
@@ -40,26 +37,12 @@ def stackplot(x, *args, ax=None, colors=None, labels=(), **kwargs):
     # Color between array i-1 and array i
     for i in range(len(y) - 1):
         color = ax._get_lines.get_next_color()
-        r.append(ax.fill_between(x, stack[i, :], stack[i+1, :],
-                                 where=(stack[i, :] != stack[i+1, :]), facecolor=color,
+        r.append(ax.fill_between(x, stack[i, :], stack[i + 1, :],
+                                 where=(stack[i, :] != stack[i + 1, :]), facecolor=color,
                                  edgecolor=color, label=next(labels, None), interpolate=True,
                                  **kwargs))
 
     return r
-
-
-def fish_plot(pops_stack, steps, colors=None, pop_max=None):
-    """Plot the actual fish plot."""
-    stackplot(steps, pops_stack, colors=colors)
-
-    first_step = pops_stack.columns[0]
-    last_step = pops_stack.columns[-1]
-    plt.xlim(first_step, last_step)
-    plt.ylim(0, 1)
-    label_text = np.round(np.abs(np.arange(-0.5, 0.6, 0.1)), 1)
-    plt.yticks(np.arange(0, 1.1, step=0.1),
-               (label_text * pop_max).astype(int) if pop_max is not None else label_text)
-    plt.xticks(np.arange(first_step, last_step + 1, step=(last_step - first_step) / 10).astype(int))
 
 
 def _create_ordering(cur_tree, cur_clone):
@@ -215,46 +198,15 @@ def setup_figure(width=1920, height=1080, absolute=False):
     plt.ylabel('population' if absolute else 'proportion')
 
 
-if __name__ == '__main__':
-    randint = np.random.randint(0, 2**31 - 1)
-    parser = argparse.ArgumentParser(description='Create a Fish (Muller) plot '
-                                                 'for the given evolutionary tree.')
-    parser.add_argument("populations", type=str,
-                        help="A CSV file with the header \"Id,Step,Pop\".")
-    parser.add_argument("parent_tree", type=str,
-                        help="A CSV file with the header \"ParentId,ChildId\".")
-    parser.add_argument("output", type=str,
-                        help="Output image filepath. The format must support alpha channels.")
-    parser.add_argument('-a', '--absolute', dest="absolute", action="store_true", default=False,
-                        help='Plot the populations in absolute numbers rather than normalized.')
-    parser.add_argument("-i", "--interpolation", dest='interpolation', type=int, default=0,
-                        help="Order of interpolation for empty data (0 means no interpolation).")
-    parser.add_argument("-S", "--smooth", type=float, default=None,
-                        help="STDev for Gaussian convolutional filter. The higher the value "
-                             "the smoother the resulting bands will be. Recommended is around 1.0.")
-    parser.add_argument("-F", "--first", dest="first_step", type=int,
-                        help="The step to start plotting from.")
-    parser.add_argument("-L", "--last", dest="last_step", type=int,
-                        help="The step to end the plotting at.")
-    parser.add_argument("-R", "--seed", dest="seed", type=int,
-                        help="Random seed for selection of colors.", default=randint)
-    parser.add_argument("--cmap", type=str, default="rainbow",
-                        help="Colormap to use. Has to be a matplotlib colormap Uses rainbow by default")
-    parser.add_argument("-W", "--width", dest="width", type=int, default=1920,
-                        help="Output image width")
-    parser.add_argument("-H", "--height", dest="height", type=int, default=1080,
-                        help="Output image height")
+def fish_plot(pops_stack, steps, colors=None, pop_max=None):
+    """Plot the actual fish plot."""
+    _stackplot(steps, pops_stack, colors=colors)
 
-    # Read
-    args = parser.parse_args()
-    populations_df = pd.read_csv(args.populations)
-    parent_tree_df = pd.read_csv(args.parent_tree)
-
-    # Compute
-    data = process_data(populations_df, parent_tree_df, args.first_step, args.last_step,
-                        args.interpolation, args.absolute, args.smooth, args.seed, args.cmap)
-
-    # Plot
-    setup_figure(args.width, args.height, args.absolute)
-    fish_plot(*data)
-    plt.savefig(args.output)
+    first_step = pops_stack.columns[0]
+    last_step = pops_stack.columns[-1]
+    plt.xlim(first_step, last_step)
+    plt.ylim(0, 1)
+    label_text = np.round(np.abs(np.arange(-0.5, 0.6, 0.1)), 1)
+    plt.yticks(np.arange(0, 1.1, step=0.1),
+               (label_text * pop_max).astype(int) if pop_max is not None else label_text)
+    plt.xticks(np.arange(first_step, last_step + 1, step=(last_step - first_step) / 10).astype(int))

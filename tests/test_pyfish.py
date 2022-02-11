@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pyfish.pyfish import process_data, fish_plot
+from src.pyfish.pyfish import process_data, fish_plot
 
 
 def test_pyfish():
@@ -16,5 +16,6 @@ def test_pyfish():
 
     fish_plot(*process_data(populations_df, parent_tree_df, absolute=True, interpolation=1, smooth=1, seed=42))
     plt.show()
+
 
 test_pyfish()

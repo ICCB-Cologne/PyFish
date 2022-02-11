@@ -17,6 +17,7 @@ setup(
     license="MIT",
     keywords="plot genomics visualization",
     packages=['pyfish', 'tests'],
+    scripts=['pyfish'],
     install_requires=[
         'numpy>=1.14',
         'pandas>=1.0',
