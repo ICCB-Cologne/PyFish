@@ -1,7 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from src.pyfish.pyfish import process_data, fish_plot
+from pyfish.core import fish_plot, process_data
 
 
 def test_pyfish():
