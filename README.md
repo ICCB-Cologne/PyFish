@@ -91,7 +91,7 @@ Additional arguments match the parameters as described below.
 * `fish_plot` Calls the plotting function on the input parameters.
 
 ### Example:
-``` 
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -107,6 +107,10 @@ setup_figure()
 fish_plot(*data)
 plt.show()
 ```
+
+Calling the above code displays the following image:
+
+<img src="./docs/test.png" width="350" />
 
 ## Parameters
 
@@ -155,7 +159,7 @@ Default colormap is rainbow.
 
 | Base                          | --cmap viridis                   |
 |-------------------------------|----------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/map.png) |
+| ![Base plot](https://bitbucket.org/schwarzlab/pyfish/raw/daaa225/docs/abs.png) | ![Smoothed plot](./docs/map.png) |
 
 
 ### `-R, --seed int+`

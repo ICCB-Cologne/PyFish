@@ -4,13 +4,15 @@ from setuptools import setup
 
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), fname)).read().replace(  # patch for images
+        "./docs/", "https://bitbucket.org/schwarzlab/pyfish/raw/HEAD/docs/"
+    )
 
 
 setup(
-    name="pyfish.py",
+    name="pyfish",
     version="1.0.0",
-    author="Adam Streck, Tom Kaufmann",
+    author="Adam Streck, Tom L. Kaufmann",
     author_email="adam.streck@mdc-berlin.de",
     description="Plotting tool for evolutionary population dynamics. Creates a Fish (Muller) plot.",
     long_description=read('README.md'),
@@ -18,12 +20,13 @@ setup(
     license="MIT",
     keywords="plot genomics visualization",
     python_requires='>=3.8',
-    packages=['pyfish', 'tests'],
+    packages=['pyfish'],
     entry_points={
         'console_scripts': [
             'pyfish = pyfish.main:main',
         ],
     },
+    url="https://bitbucket.org/schwarzlab/pyfish",
     install_requires=[
         'numpy>=1.14',
         'pandas>=1.0',
