@@ -38,18 +38,12 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
                 test_image_path = os.path.join(image_dir, (file_name + "." + ext))
                 ref_image_path = os.path.join(image_dir, (file_name + "_ref" + "." + ext))
                 try_to_delete_file(test_image_path)
-                if ext != "png":
-                    try_to_delete_file(os.path.join(image_dir, (file_name + "_" + ext + '.png')))
                 fig_test.savefig(test_image_path)
 
                 compare_images(ref_image_path, test_image_path, tol=tol)
             finally:
                 plt.close(fig_test)
                 try_to_delete_file(test_image_path)
-                # remove files created by compare_images
-                if ext != "png":
-                    try_to_delete_file(os.path.join(image_dir, (file_name + "_" + ext + '.png')))
-                    try_to_delete_file(os.path.join(image_dir, (file_name + "_ref_" + ext + '.png')))
 
         # reach a bit into pytest internals to hoist the marks from
         # our wrapped function
@@ -61,7 +55,7 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
     return decorator
 
 
-@check_figures_equal('test_pyfish_figure', extensions=['png', 'pdf'])
+@check_figures_equal('test_pyfish_figure', extensions=['png'])
 def test_pyfish_figure():
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
