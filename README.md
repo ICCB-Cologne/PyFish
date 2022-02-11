@@ -175,6 +175,3 @@ Email questions, feature requests and bug reports to Adam Streck, `adam.streck@m
 
 ## License
 PyFish is available under the MIT License.
-
-## Please cite
-TODO

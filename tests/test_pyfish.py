@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from matplotlib.testing.compare import compare_images
-from pyfish.core import fish_plot, process_data, setup_figure
+from pyfish.pyfish import fish_plot, process_data, setup_figure
 
 
 def try_to_delete_file(file_name):
@@ -14,6 +14,7 @@ def try_to_delete_file(file_name):
         os.remove(file_name)
     except FileNotFoundError:
         pass
+
 
 def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
     """
@@ -27,7 +28,7 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
         pass
 
     def decorator(func):
-        
+
         @pytest.mark.parametrize("ext", extensions)
         def wrapper(*args, ext, **kwargs):
 
@@ -40,7 +41,7 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
                 if ext != "png":
                     try_to_delete_file(os.path.join(image_dir, (file_name + "_" + ext + '.png')))
                 fig_test.savefig(test_image_path)
-                
+
                 compare_images(ref_image_path, test_image_path, tol=tol)
             finally:
                 plt.close(fig_test)
@@ -60,12 +61,10 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
     return decorator
 
 
-
 @check_figures_equal('test_pyfish_figure', extensions=['png', 'pdf'])
 def test_pyfish_figure():
-    
     populations = np.array(
-        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
 
     parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
@@ -81,10 +80,9 @@ def test_pyfish_figure():
 @pytest.mark.parametrize("absolute,interpolation,smooth",
                          list(product([True, False], [0, 1, 2], [0, 1, 2])))
 def test_all_parameters(absolute, interpolation, smooth):
-
     populations = np.array(
-        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
-        [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
+         [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
 
     parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
 
@@ -96,10 +94,9 @@ def test_all_parameters(absolute, interpolation, smooth):
     plt.close()
 
 
-
 def test_pyfish_missing_tree_root_error():
     populations = np.array(
-        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
 
     parent_tree = np.array([[0, 2], [1, 3]])
@@ -113,7 +110,7 @@ def test_pyfish_missing_tree_root_error():
 
 def test_pyfish_missing_entries_for_interpolation_error():
     populations = np.array(
-        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 5, 0], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
 
     parent_tree = np.array([[0, 1], [1, 2], [0, 3]])

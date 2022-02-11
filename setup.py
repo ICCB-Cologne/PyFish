@@ -1,5 +1,5 @@
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 def read(fname):
@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(
-    name="pyfish",
+    name="pyfish.py",
     version="1.0.0",
     author="Adam Streck, Tom Kaufmann",
     author_email="adam.streck@mdc-berlin.de",
@@ -17,13 +17,17 @@ setup(
     license="MIT",
     keywords="plot genomics visualization",
     python_requires='>=3.8',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    scripts=['pyfish'],
+    packages=['pyfish', 'tests'],
+    entry_points={
+        'console_scripts': [
+            'pyfish = pyfish.pyfish:main',
+        ],
+    },
     install_requires=[
         'numpy>=1.14',
         'pandas>=1.0',
         'scipy>=1.0',
-        'matplotlib>=3.0'
+        'matplotlib>=3.0',
+        'pytest>=3.0'
     ],
 )
