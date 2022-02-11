@@ -68,7 +68,7 @@ def _build_tree(parent_df):
     children = parent_df["ChildId"].unique()
     root_list = np.setdiff1d(parents, children)
     if len(root_list) != 1:
-        raise Exception("Failed to determine root. "
+        raise ValueError("Failed to determine root. "
                         "There must be exactly one node with no parent in the parent tree.")
     root_id = root_list[0]
     ids = np.concatenate([[root_id], children])

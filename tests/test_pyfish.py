@@ -1,10 +1,102 @@
+import os
+from itertools import product
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pyfish.core import fish_plot, process_data
+import pytest
+from matplotlib.testing.compare import compare_images
+from pyfish.core import fish_plot, process_data, setup_figure
 
 
-def test_pyfish():
+def try_to_delete_file(file_name):
+    try:
+        os.remove(file_name)
+    except FileNotFoundError:
+        pass
+
+def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
+    """
+    Loosely based on matplotlib.testing.decorators.check_figures_equal
+    """
+    file_name = file_name
+    image_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+    try:
+        os.mkdir(image_dir)
+    except FileExistsError:
+        pass
+
+    def decorator(func):
+        
+        @pytest.mark.parametrize("ext", extensions)
+        def wrapper(*args, ext, **kwargs):
+
+            try:
+                fig_test = plt.figure("test")
+                func(*args, **kwargs)
+                test_image_path = os.path.join(image_dir, (file_name + "." + ext))
+                ref_image_path = os.path.join(image_dir, (file_name + "_ref" + "." + ext))
+                try_to_delete_file(test_image_path)
+                if ext != "png":
+                    try_to_delete_file(os.path.join(image_dir, (file_name + "_" + ext + '.png')))
+                fig_test.savefig(test_image_path)
+                
+                compare_images(ref_image_path, test_image_path, tol=tol)
+            finally:
+                plt.close(fig_test)
+                try_to_delete_file(test_image_path)
+                # remove files created by compare_images
+                if ext != "png":
+                    try_to_delete_file(os.path.join(image_dir, (file_name + "_" + ext + '.png')))
+                    try_to_delete_file(os.path.join(image_dir, (file_name + "_ref_" + ext + '.png')))
+
+        # reach a bit into pytest internals to hoist the marks from
+        # our wrapped function
+        # new_marks = getattr(func, "pytestmark", []) + wrapper.pytestmark
+        # wrapper.pytestmark = new_marks
+
+        return wrapper
+
+    return decorator
+
+
+
+@check_figures_equal('test_pyfish_figure', extensions=['png', 'pdf'])
+def test_pyfish_figure():
+    
+    populations = np.array(
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+         [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
+
+    parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
+
+    populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
+    parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
+
+    setup_figure()
+    fish_plot(*process_data(populations_df, parent_tree_df, absolute=True,
+                            interpolation=1, smooth=1, seed=42))
+
+
+@pytest.mark.parametrize("absolute,interpolation,smooth",
+                         list(product([True, False], [0, 1, 2], [0, 1, 2])))
+def test_all_parameters(absolute, interpolation, smooth):
+
+    populations = np.array(
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+        [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
+
+    parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
+
+    populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
+    parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
+
+    fish_plot(*process_data(populations_df, parent_tree_df,
+                            absolute=absolute, interpolation=interpolation, smooth=smooth))
+    plt.close()
+
+
+def test_pyfish_empty_timestep_error():
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
@@ -14,8 +106,33 @@ def test_pyfish():
     populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
     parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
 
-    fish_plot(*process_data(populations_df, parent_tree_df, absolute=True, interpolation=1, smooth=1, seed=42))
-    plt.show()
+    with pytest.raises(ValueError):
+        fish_plot(*process_data(populations_df, parent_tree_df))
 
 
-test_pyfish()
+def test_pyfish_missing_tree_root_error():
+    populations = np.array(
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+         [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
+
+    parent_tree = np.array([[0, 2], [1, 3]])
+
+    populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
+    parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
+
+    with pytest.raises(ValueError):
+        _ = process_data(populations_df, parent_tree_df)
+
+
+def test_pyfish_missing_entries_for_interpolation_error():
+    populations = np.array(
+        [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50],  [1, 4, 50],
+         [1, 5, 100], [2, 5, 0], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
+
+    parent_tree = np.array([[0, 1], [1, 2], [0, 3]])
+
+    populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
+    parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
+
+    with pytest.raises(ValueError):
+        _ = process_data(populations_df, parent_tree_df, interpolation=2)
