@@ -156,6 +156,9 @@ def process_data(pops_df, parent_df,
 
     else:
         pops_table = pops_table.fillna(0)
+        if (pops_table == 0).all(axis=0).any():
+            raise ValueError("If --interpolation is not set and --absolute is not set you cannot "
+                             "have missing Steps")
 
     steps = pops_table.columns
 
