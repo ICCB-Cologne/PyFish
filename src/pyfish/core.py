@@ -143,7 +143,7 @@ def process_data(pops_df, parent_df,
                              f"enough datapoints (at least {interpolation + 1} per sample)")
 
         larger_pops_table = pd.DataFrame(index=pops_table.index,
-                                         columns=np.arange(0, pops_table.shape[1] - 0.1, 0.1))
+                                         columns=np.arange(first_step, last_step - 0.1, 0.1))
         larger_pops_table[pops_table.columns.astype(float)] = pops_table
         larger_pops_table = larger_pops_table.astype(float)
 
@@ -156,7 +156,7 @@ def process_data(pops_df, parent_df,
 
     else:
         pops_table = pops_table.fillna(0)
-        if (pops_table == 0).all(axis=0).any():
+        if not absolute and (pops_table == 0).all(axis=0).any():
             raise ValueError("If --interpolation is not set and --absolute is not set you cannot "
                              "have missing Steps")
 
