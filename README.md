@@ -10,7 +10,9 @@ PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wiki
 * high performance
 * works with low and high density data
 
-## Getting Started
+## Installation
+
+PyFish requires Python >= 3.8
 
 The package can be installed using Pip:
 
@@ -65,3 +67,44 @@ An example parent tree:
 **Note: there must be exactly one node in the parent tree that has no parent. This is the root (0 in the example above).**
 
 ## Execution
+
+PyFish can be used either as a stand-alone tool or as a plotting library.
+
+### Tool 
+
+We provide example data. From the root folder of the project call: 
+
+`pyfish tests/populations.csv tests/parent_tree.csv out.png`
+
+This will create a plot called `out.png` in the folder. 
+
+### Library
+
+
+
+## Parameters
+
+### `-a, --absolute`
+
+Plots absolute population counts at each step 
+
+| Base                          | Absolute                         |
+|-------------------------------|----------------------------------|
+| ![Base plot](./docs/base.png) | ![Absolute plot](./docs/abs.png) |
+
+* `-I int` 
+* `-S float`
+* `-F int+`, `-L int+`
+* `-M string`
+* `-R int+`
+* `-W int+`, `-H int+`
+
+
+## Contact
+Email questions, feature requests and bug reports to Adam Streck, adam.streck@mdc-berlin.de.
+
+## License
+PyFish is available under the MIT License.
+
+## Please cite
+TODO

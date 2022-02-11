@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(fname):
@@ -16,7 +16,9 @@ setup(
     long_description_content_type='text/markdown',
     license="MIT",
     keywords="plot genomics visualization",
-    packages=['pyfish', 'tests'],
+    python_requires='>=3.8',
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
     scripts=['pyfish'],
     install_requires=[
         'numpy>=1.14',
