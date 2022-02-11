@@ -40,15 +40,15 @@ An example populations table:
 | 0   | 0    | 100 |
 | 0   | 1    | 40  |
 | 0   | 2    | 20  |
-| 0   | 3    | 10  |
+| 0   | 3    | 0   |
 | 1   | 1    | 10  |
 | 1   | 3    | 50  |
 | 1   | 5    | 100 |
-| 2   | 4    | 0   |
+| 2   | 4    | 20  |
 | 2   | 5    | 50  |
 | 3   | 0    | 10  |
-| 3   | 1    | 10  |
-| 3   | 5    | 20  |
+| 3   | 1    | 20  |
+| 3   | 5    | 10  |
 
 ### Parent Tree
 
@@ -86,14 +86,27 @@ This will create a plot called `out.png` in the folder.
 
 ### `-a, --absolute`
 
-Plots absolute population counts at each step 
+Plots absolute population counts at each step.
 
-| Base                          | Absolute                         |
+| Base                          | --absolute                       |
 |-------------------------------|----------------------------------|
 | ![Base plot](./docs/base.png) | ![Absolute plot](./docs/abs.png) |
 
-* `-I int` 
+###  `-I, --interpolate int`
+
+Fills in missing values by interpolation by a polynomial of the given degree. 
+If a value is not given, each population is set to 0 at the first and last step.
+
+| Base                          | --interpolate 2                                |
+|-------------------------------|------------------------------------------------|
+| ![Base plot](./docs/test.png) | ![Interpolated plot](./docs/interpolation.png) |
+
 * `-S float`
+
+| Base                          | --smooth = 50                       |
+|-------------------------------|-------------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/smooth.png) |
+
 * `-F int+`, `-L int+`
 * `-M string`
 * `-R int+`
