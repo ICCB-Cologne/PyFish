@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+# VSCode
+.vscode
+
 # Compiled Java class files
 *.class
 
