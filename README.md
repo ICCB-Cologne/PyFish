@@ -1,5 +1,7 @@
 # PyFish
 
+[![PyPI version](https://badge.fury.io/py/pyfish.svg)](https://badge.fury.io/py/pyfish)
+
 PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wikipedia.org/wiki/Muller_plot) like this one:
 
 ![Example plot](./docs/fish.png)
@@ -159,7 +161,7 @@ Default colormap is rainbow.
 
 | Base                          | --cmap viridis                   |
 |-------------------------------|----------------------------------|
-| ![Base plot](https://bitbucket.org/schwarzlab/pyfish/raw/daaa225/docs/abs.png) | ![Smoothed plot](./docs/map.png) |
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/map.png) |
 
 
 ### `-R, --seed int+`
