@@ -2,9 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/pyfish.svg)](https://badge.fury.io/py/pyfish)
 
-PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wikipedia.org/wiki/Muller_plot) like this one:
-
-![Example plot](./docs/fish.png)
+PyFish is a Python 3 package for creation of [Fish (Muller) plots](https://en.wikipedia.org/wiki/Muller_plot) like the one below.
 
 ### Primary features
 * polynomial interpolation
@@ -13,6 +11,8 @@ PyFish is a Python package for creation of [Fish (Muller) plots](https://en.wiki
 * works with low and high density data
 
 PyFish can be used either as a stand-alone tool or as a plotting library.
+
+<img src="./docs/fish.png" width="600" />
 
 ## Installation
 
