@@ -20,11 +20,15 @@ PyFish can be used either as a stand-alone tool or as a plotting library.
 
 PyFish requires Python >= 3.8
 
-The package can be installed using Pip:
+The package can be installed using Conda (from the bioconda channel)
 
-```
-pip install PyFish
-```
+`conda install -c bioconda pyfish`
+
+or Pip
+
+`pip install pyfish`.
+
+
 
 ## Input
 
