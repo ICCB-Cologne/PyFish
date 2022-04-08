@@ -203,7 +203,7 @@ def setup_figure(width=1920, height=1080, absolute=False):
 
 def fish_plot(pops_stack, steps, colors=None, pop_max=None, ax=None):
     """Plot the actual fish plot."""
-    _stackplot(steps, pops_stack, colors=colors, ax=None)
+    _stackplot(steps, pops_stack, colors=colors, ax=ax)
 
     if ax is None:
         ax = plt.gca()
