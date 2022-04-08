@@ -201,15 +201,18 @@ def setup_figure(width=1920, height=1080, absolute=False):
     plt.ylabel('population' if absolute else 'proportion')
 
 
-def fish_plot(pops_stack, steps, colors=None, pop_max=None):
+def fish_plot(pops_stack, steps, colors=None, pop_max=None, ax=None):
     """Plot the actual fish plot."""
-    _stackplot(steps, pops_stack, colors=colors)
+    _stackplot(steps, pops_stack, colors=colors, ax=None)
+
+    if ax is None:
+        ax = plt.gca()
 
     first_step = pops_stack.columns[0]
     last_step = pops_stack.columns[-1]
-    plt.xlim(first_step, last_step)
-    plt.ylim(0, 1)
+    ax.set_xlim(first_step, last_step)
+    ax.set_ylim(0, 1)
     label_text = np.round(np.abs(np.arange(-0.5, 0.6, 0.1)), 1)
-    plt.yticks(np.arange(0, 1.1, step=0.1),
-               (label_text * pop_max).astype(int) if pop_max is not None else label_text)
-    plt.xticks(np.arange(first_step, last_step + 1, step=(last_step - first_step) / 10).astype(int))
+    ax.set_yticks(np.arange(0, 1.1, step=0.1))
+    ax.set_yticklabels((label_text * pop_max).astype(int) if pop_max is not None else label_text)
+    ax.set_xticks(np.arange(first_step, last_step + 1, step=(last_step - first_step) / 10).astype(int))
