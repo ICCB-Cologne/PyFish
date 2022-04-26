@@ -30,6 +30,8 @@ def main():
                         help="Random seed for selection of colors.", default=42)
     parser.add_argument("-M", "--cmap", type=str, default="rainbow",
                         help="Colormap to use. Has to be a matplotlib colormap Uses rainbow by default")
+    parser.add_argument("-C", "--color-by", type=str, default=None,
+                        help="Color the fishplot based on this column of the populations dataframe")
     parser.add_argument("-W", "--width", dest="width", type=int, default=1920,
                         help="Output image width")
     parser.add_argument("-H", "--height", dest="height", type=int, default=1080,
@@ -42,7 +44,8 @@ def main():
 
     # Compute
     data = process_data(populations_df, parent_tree_df, args.first_step, args.last_step,
-                        args.interpolation, args.absolute, args.smooth, args.seed, args.cmap)
+                        args.interpolation, args.absolute, args.smooth, args.seed, args.cmap,
+                        args.color_by)
 
     # Plot
     setup_figure(args.width, args.height, args.absolute)

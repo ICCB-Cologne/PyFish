@@ -81,7 +81,7 @@ def _build_tree(parent_df):
     return tree, ids, root_id
 
 
-def _create_colors(ids, root_id, ordering, seed, cmap_name):
+def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=None):
     np.random.seed(seed)
     try:
         cmap = cm.get_cmap(cmap_name)
@@ -89,19 +89,33 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name):
         print("WARNING: colormap not recognized, setting to default")
         cmap = cm.get_cmap("rainbow")
 
-    cols = np.array(cmap(np.linspace(0, 1, len(ids))))
-    np.random.shuffle(cols)
-    cols = pd.DataFrame(cols, index=ids)
-    cols.loc[-1] = np.ones(4)
-    cols.loc[root_id] = .5 * np.ones(4)
-    cols = cols.loc[ordering].values
+    if color_by is not None:
+        # color by separate column in pops_df
+        assert color_by in pops_df.columns, "'color_by' has to be a column in pops_df"
 
-    return cols
+        min_value = pops_df[color_by].min()
+        unique_colors = cmap(np.linspace(0, 1, pops_df[color_by].max() - min_value + 1))
+        unique_colors = {value: unique_colors[value - min_value] for value in np.sort(pops_df[color_by].unique())}
+        colors = pd.DataFrame(np.zeros((len(ids), 4)), index=ids)
+        for cur_id in ids:
+            colors.loc[cur_id] = unique_colors[pops_df.loc[pops_df['Id']==cur_id, color_by].iloc[0]]
+
+    else:
+        # color by id
+        colors = np.array(cmap(np.linspace(0, 1, len(ids))))
+        np.random.shuffle(colors)
+        colors = pd.DataFrame(colors, index=ids)
+        colors.loc[-1] = np.ones(4)
+        colors.loc[root_id] = .5 * np.ones(4)
+
+    colors = colors.loc[ordering].values
+
+    return colors
 
 
 def process_data(pops_df, parent_df,
                  first_step=None, last_step=None, interpolation=0, absolute=False, smooth=None, seed=0,
-                 cmap_name="rainbow"):
+                 cmap_name="rainbow", color_by=None):
     """Load data required for plotting.
 
     Args:
@@ -189,7 +203,7 @@ def process_data(pops_df, parent_df,
     pops_sum[pops_sum == 0] = 1
     pops_stack = pops_stack / pops_sum
 
-    colors = _create_colors(ids, root_id, ordering, seed, cmap_name)
+    colors = _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=color_by)
     return pops_stack, steps, colors, pop_max
 
 
