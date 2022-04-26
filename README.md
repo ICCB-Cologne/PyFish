@@ -169,6 +169,17 @@ Default colormap is rainbow.
 |-------------------------------|----------------------------------|
 | ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/map.png) |
 
+### `-C, --color_by string`
+
+Color the ids based on a separate column in the populations.csv file.
+It will select the first value of the column per id, so the value should be constant for all entries with the same id.
+
+Best combined with a sequential colormap using `--cmap`
+
+| Base                          | --color-by Feature --cmap viridis |
+|-------------------------------|-----------------------------------|
+| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/color_by.png) |
+
 
 ### `-R, --seed int+`
 
