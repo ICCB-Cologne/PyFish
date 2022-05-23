@@ -14,7 +14,7 @@ PyFish is a Python 3 package for creation of [Fish (Muller) plots](https://en.wi
 
 PyFish can be used either as a stand-alone tool or as a plotting library.
 
-<img src="./docs/fish.png" width="600" />
+<img src="./doc/fish.png" width="600" />
 
 ## Installation
 
@@ -118,7 +118,7 @@ plt.show()
 
 Calling the above code displays the following image:
 
-<img src="./docs/test.png" width="350" />
+<img src="./doc/test.png" width="350" />
 
 ## Parameters
 
@@ -128,7 +128,7 @@ Plots absolute population counts at each step.
 
 | Base                          | --absolute                       |
 |-------------------------------|----------------------------------|
-| ![Base plot](./docs/base.png) | ![Absolute plot](./docs/abs.png) |
+| ![Base plot](./doc/base.png) | ![Absolute plot](./doc/abs.png) |
 
 ### `-I, --interpolate int`
 
@@ -137,7 +137,7 @@ If a value is not given, each population is set to 0 at the first and last step.
 
 | Base                          | --interpolate 2                                |
 |-------------------------------|------------------------------------------------|
-| ![Base plot](./docs/test.png) | ![Interpolated plot](./docs/interpolation.png) |
+| ![Base plot](./doc/test.png) | ![Interpolated plot](./doc/interpolation.png) |
 
 ### `-S, --smooth float`
 
@@ -149,7 +149,7 @@ The bigger the population the bigger the value should be.
 
 | Base                          | --smooth 50                         |
 |-------------------------------|-------------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/smooth.png) |
+| ![Base plot](./doc/base.png) | ![Smoothed plot](./doc/smooth.png) |
 
 ### `-F, --first int+`, `-L, --last int+`
 
@@ -157,7 +157,7 @@ Only limits the steps to the range `[first, last]` inclusive.
 
 | Base                          | --first 4000 --last 4500           |
 |-------------------------------|------------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/bound.png) |
+| ![Base plot](./doc/base.png) | ![Smoothed plot](./doc/bound.png) |
 
 ### `-M, --cmap string`
 
@@ -167,7 +167,7 @@ Default colormap is rainbow.
 
 | Base                          | --cmap viridis                   |
 |-------------------------------|----------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/map.png) |
+| ![Base plot](./doc/base.png) | ![Smoothed plot](./doc/map.png) |
 
 ### `-C, --color_by string`
 
@@ -178,7 +178,7 @@ Best combined with a sequential colormap using `--cmap`
 
 | Base                          | --color-by Feature --cmap viridis |
 |-------------------------------|-----------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/color_by.png) |
+| ![Base plot](./doc/base.png) | ![Smoothed plot](./doc/color_by.png) |
 
 
 ### `-R, --seed int+`
@@ -187,7 +187,7 @@ Specifies the seed for the randomization of colors.
 
 | Base                          | --seed 2022                       |
 |-------------------------------|-----------------------------------|
-| ![Base plot](./docs/base.png) | ![Smoothed plot](./docs/seed.png) |
+| ![Base plot](./doc/base.png) | ![Smoothed plot](./doc/seed.png) |
 
 ### `-W, --width int+`, `-H, --height int+`
 
