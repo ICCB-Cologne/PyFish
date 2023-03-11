@@ -105,9 +105,9 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=No
         colors = np.array(cmap(np.linspace(0, 1, len(ids))))
         np.random.shuffle(colors)
         colors = pd.DataFrame(colors, index=ids)
-        colors.loc[-1] = np.ones(4)
         colors.loc[root_id] = .5 * np.ones(4)
 
+    colors.loc[-1] = np.ones(4)
     colors = colors.loc[ordering].values
 
     return colors
