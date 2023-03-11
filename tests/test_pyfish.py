@@ -116,15 +116,13 @@ def test_pyfish_missing_entries_for_interpolation_error():
         _ = process_data(populations_df, parent_tree_df, interpolation=2)
 
 
+@check_figures_equal('test_pyfish_figure_color_by', extensions=['png'])
 def test_pyfish_figure_color_by():
     populations_df = pd.read_csv("tests/populations_new.csv")
     parent_tree_df = pd.read_csv("tests/parent_tree.csv")
 
     setup_figure()
     fish_plot(*process_data(populations_df, parent_tree_df, absolute=True,
-                            interpolation=0, smooth=1, seed=42, color_by="Feature"))
-    plt.savefig("test.png")
+                            interpolation=0, smooth=1, seed=42,
+                            color_by="Feature"))
     plt.close()
-
-
-test_pyfish_figure_color_by()
