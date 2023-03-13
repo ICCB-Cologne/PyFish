@@ -35,21 +35,21 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
 
             try:
                 fig_test = plt.figure("test")
+                ax = fig_test.add_subplot(111)
+                kwargs['ax'] = ax
                 func(*args, **kwargs)
                 test_image_path = os.path.join(image_dir, (file_name + "." + ext))
                 ref_image_path = os.path.join(image_dir, (file_name + "_ref" + "." + ext))
                 try_to_delete_file(test_image_path)
                 fig_test.savefig(test_image_path)
 
-                compare_images(ref_image_path, test_image_path, tol=tol)
+                diff = compare_images(ref_image_path, test_image_path, tol=tol)
+                assert diff is None, "Figure mismatch, see figure diff in dir tests/images"
+
             finally:
                 plt.close(fig_test)
                 try_to_delete_file(test_image_path)
 
-        # reach a bit into pytest internals to hoist the marks from
-        # our wrapped function
-        # new_marks = getattr(func, "pytestmark", []) + wrapper.pytestmark
-        # wrapper.pytestmark = new_marks
 
         return wrapper
 
@@ -57,7 +57,7 @@ def check_figures_equal(file_name, extensions=("png", "pdf", "svg"), tol=0):
 
 
 @check_figures_equal('test_pyfish_figure', extensions=['png'])
-def test_pyfish_figure():
+def test_pyfish_figure(ax):
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
@@ -69,7 +69,7 @@ def test_pyfish_figure():
 
     setup_figure()
     fish_plot(*process_data(populations_df, parent_tree_df, absolute=True,
-                            interpolation=1, smooth=1, seed=42))
+                            interpolation=1, smooth=1, seed=42), ax=ax)
 
 
 @pytest.mark.parametrize("absolute,interpolation,smooth",
@@ -86,7 +86,7 @@ def test_all_parameters(absolute, interpolation, smooth):
 
     fish_plot(*process_data(populations_df, parent_tree_df,
                             absolute=absolute, interpolation=interpolation, smooth=smooth))
-    plt.close()
+    # plt.close()
 
 
 def test_pyfish_missing_tree_root_error():
@@ -118,12 +118,11 @@ def test_pyfish_missing_entries_for_interpolation_error():
 
 
 @check_figures_equal('test_pyfish_figure_color_by', extensions=['png'])
-def test_pyfish_figure_color_by():
+def test_pyfish_figure_color_by(ax):
     populations_df = pd.read_csv("tests/populations_new.csv")
     parent_tree_df = pd.read_csv("tests/parent_tree.csv")
 
     setup_figure()
     fish_plot(*process_data(populations_df, parent_tree_df, absolute=True,
                             interpolation=0, smooth=1, seed=42,
-                            color_by="Feature"))
-    plt.close()
+                            color_by="Feature"), ax=ax)
