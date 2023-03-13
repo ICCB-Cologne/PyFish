@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from pyfish import fish_plot, process_data, setup_figure
 
 
-def main():
+def run():
     parser = argparse.ArgumentParser(description='Create a Fish (Muller) plot '
                                                  'for the given evolutionary tree.')
     parser.add_argument("populations", type=str,
@@ -54,4 +54,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()

@@ -23,7 +23,7 @@ setup(
     packages=['pyfish'],
     entry_points={
         'console_scripts': [
-            'pyfish = pyfish.main:main',
+            'pyfish = pyfish.main:run',
         ],
     },
     url="https://bitbucket.org/schwarzlab/pyfish",
