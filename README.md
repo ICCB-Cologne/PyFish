@@ -196,8 +196,10 @@ Specifies the dimensions for the output image. The size is including the axes' l
 ## Citation
 Please cite as: *Adam Streck, Tom L Kaufmann, Roland F Schwarz, SMITH: Spatially Constrained Stochastic Model for Simulation of Intra-Tumour Heterogeneity, Bioinformatics, 2023; https://doi.org/10.1093/bioinformatics/btad102*
 
-## Contact
-Email questions, feature requests and bug reports to Adam Streck, `adam.streck@mdc-berlin.de`.
+## Credits
+Authors: Adam Streck, Tom L. Kaufmann    
+Current contact: [Adam Streck](mailto:adam.streck@gmail.com?subject=PyFish)    
+Supervised by: Roland F. Schwarz
 
 ## License
 PyFish is available under the MIT License.
