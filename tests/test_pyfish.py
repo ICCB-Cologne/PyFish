@@ -73,7 +73,7 @@ def test_pyfish_figure(ax):
 
 
 @pytest.mark.parametrize("absolute,interpolation,smooth",
-                         list(product([True, False], [-1, 0, 1, 2], [0, 1, 2])))
+                         list(product([True, False], [-1, 0, 1, 2], [-1, 0, 1, 2])))
 def test_all_parameters(absolute, interpolation, smooth):
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
@@ -95,9 +95,9 @@ def test_all_parameters(absolute, interpolation, smooth):
     plt.close(fig)
 
 
-@pytest.mark.parametrize("absolute,interpolation,smooth",
-                         list(product([True, False], [-1, 0, 1, 2], [0, 1, 2])))
-def test_curved(absolute, interpolation, smooth):
+@pytest.mark.parametrize("absolute,interpolation",
+                         list(product([True, False], [-1, 0, 1, 2])))
+def test_curved(absolute, interpolation):
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
@@ -110,12 +110,12 @@ def test_curved(absolute, interpolation, smooth):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     fish_plot(*process_data(populations_df, parent_tree_df,
-                            absolute=absolute, interpolation=interpolation, smooth=smooth),
+                            absolute=absolute, interpolation=interpolation),
               curved=True, ax=ax)
     image_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'out')
     os.makedirs(image_dir, exist_ok=True)
     fig.savefig(os.path.join(image_dir,
-                f"test_curved_abs{absolute}_interp{interpolation}_smooth{smooth}.png"))
+                f"test_curved_abs{absolute}_interp{interpolation}.png"))
     plt.close(fig)
 
 

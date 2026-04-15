@@ -14,7 +14,7 @@ PyFish is a Python 3 package for creation of [Fish (Muller) plots](https://en.wi
 
 PyFish can be used either as a stand-alone tool or as a plotting library.
 
-<img src="https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/fish.png" width="600" />
+<img src="https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/fish.png" width="600" />
 
 ## Installation
 
@@ -118,7 +118,7 @@ plt.show()
 
 Calling the above code displays the following image:
 
-<img src="https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/test.png" width="350" />
+<img src="https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/test.png" width="350" />
 
 ## Parameters
 
@@ -128,7 +128,7 @@ Plots absolute population counts at each step.
 
 | Base                          | --absolute                       |
 |-------------------------------|----------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Absolute plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/abs.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Absolute plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/abs.png) |
 
 ### `-I, --interpolate int`
 
@@ -139,16 +139,18 @@ Fills in missing values by interpolation.
 
 | Base                          | --interpolate 2                                |
 |-------------------------------|------------------------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/test.png) | ![Interpolated plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/interpolation.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/test.png) | ![Interpolated plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/interpolation.png) |
 
 ### `-V, --curved`
 
 Smooths the filled areas using piecewise Hermite interpolation, producing gentle S-curve transitions between steps.
 Also adds a gray background and centers the plot when the population is empty at the first step.
 
+**NOTE: `--curved` and `--smooth` are mutually exclusive and cannot be used together.**
+
 | Base                          | --curved                          |
 |-------------------------------|-----------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/test.png) | ![Curved plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/curved.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/test.png) | ![Curved plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/curved.png) |
 
 ### `-S, --smooth float`
 
@@ -158,9 +160,10 @@ The bigger the population the bigger the value should be.
 
 **NOTE: If the population values are sparse, using smoothing without interpolation might lead to misleading population sizes.**
 
+
 | Base                          | --smooth 50                         |
 |-------------------------------|-------------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Smoothed plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/smooth.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/smooth.png) |
 
 ### `-F, --first int+`, `-L, --last int+`
 
@@ -168,7 +171,7 @@ Only limits the steps to the range `[first, last]` inclusive.
 
 | Base                          | --first 4000 --last 4500           |
 |-------------------------------|------------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Smoothed plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/bound.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/bound.png) |
 
 ### `-M, --cmap string`
 
@@ -178,7 +181,7 @@ Default colormap is rainbow.
 
 | Base                          | --cmap viridis                   |
 |-------------------------------|----------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Smoothed plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/map.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/map.png) |
 
 ### `-C, --color_by string`
 
@@ -189,7 +192,7 @@ Best combined with a sequential colormap using `--cmap`
 
 | Base                          | --color-by Feature --cmap viridis |
 |-------------------------------|-----------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Smoothed plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/color_by.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/color_by.png) |
 
 
 ### `-R, --seed int+`
@@ -198,7 +201,7 @@ Specifies the seed for the randomization of colors.
 
 | Base                          | --seed 2022                       |
 |-------------------------------|-----------------------------------|
-| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/base.png) | ![Smoothed plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/seed.png) |
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/seed.png) |
 
 ### `-W, --width int+`, `-H, --height int+`
 

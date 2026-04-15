@@ -115,7 +115,7 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=No
 
 
 def process_data(pops_df, parent_df,
-                 first_step=None, last_step=None, interpolation=0, absolute=False, smooth=None, seed=0,
+                 first_step=None, last_step=None, interpolation=-1, absolute=False, smooth=-1, seed=0,
                  cmap_name="rainbow", color_by=None):
     """Load data required for plotting.
 
@@ -126,7 +126,7 @@ def process_data(pops_df, parent_df,
         last_step (int, optional): Last step to plot. Defaults to None.
         interpolation (int, optional): Order of interpolation. Defaults to 0.
         absolute (bool, optional): Does not normalize data if set True. Defaults to False.
-        smooth (int, optional): Window for Gaussian smoothing. Defaults to None.
+        smooth (int, optional): Window for Gaussian smoothing. Defaults to -1 (no smoothing).
         seed (int, optional): Seed used for coloring. Defaults to 0.
         cmap_name (str, optional): Matplotlib colormap. Defaults to None.
 
@@ -179,7 +179,7 @@ def process_data(pops_df, parent_df,
 
     steps = pops_table.columns
 
-    if smooth:
+    if smooth is not None and smooth >= 0:
         pops_table = pd.DataFrame(gaussian_filter(pops_table, (0, smooth)),
                                   index=pops_table.index, columns=pops_table.columns)
 

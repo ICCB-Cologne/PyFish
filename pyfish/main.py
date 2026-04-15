@@ -18,9 +18,10 @@ def run():
                         help='Plot the populations in absolute numbers rather than normalized.')
     parser.add_argument("-I", "--interpolation", dest='interpolation', type=int, default=-1,
                         help="Order of interpolation for empty data (default is no interpolation).")
-    parser.add_argument("-S", "--smooth", dest="smooth", type=float, default=None,
+    parser.add_argument("-S", "--smooth", dest="smooth", type=float, default=-1,
                         help="STDev for Gaussian convolutional filter. The higher the value "
-                             "the smoother the resulting bands will be. Recommended is around 1.0.")
+                             "the smoother the resulting bands will be. Recommended is around 1.0. "
+                             "A negative value disables smoothing (default).")
     parser.add_argument("-F", "--first", dest="first_step", type=int,
                         help="The step to start plotting from.")
     parser.add_argument("-L", "--last", dest="last_step", type=int,
@@ -40,6 +41,7 @@ def run():
 
     # Read
     args = parser.parse_args()
+
     populations_df = pd.read_csv(args.populations)
     parent_tree_df = pd.read_csv(args.parent_tree)
 
