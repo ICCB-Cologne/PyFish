@@ -149,7 +149,7 @@ def test_pyfish_missing_entries_for_interpolation_error():
 
 @check_figures_equal('test_pyfish_figure_color_by', extensions=['png'])
 def test_pyfish_figure_color_by(ax):
-    populations_df = pd.read_csv("tests/populations_new.csv")
+    populations_df = pd.read_csv("tests/populations_feature.csv")
     parent_tree_df = pd.read_csv("tests/parent_tree.csv")
 
     setup_figure()
