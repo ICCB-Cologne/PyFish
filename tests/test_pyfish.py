@@ -119,7 +119,8 @@ def test_curved(absolute, interpolation):
     plt.close(fig)
 
 
-def test_pyfish_missing_tree_root_error():
+def test_pyfish_multiple_roots():
+    """Multiple roots should be handled by creating a synthetic parent."""
     populations = np.array(
         [[0, 0, 100], [0, 1, 40], [0, 2, 20], [0, 3, 10], [1, 1, 10], [1, 3, 50], [1, 4, 50],
          [1, 5, 100], [2, 4, 0], [2, 5, 50], [3, 0, 10], [3, 1, 10], [3, 5, 20]])
@@ -129,8 +130,10 @@ def test_pyfish_missing_tree_root_error():
     populations_df = pd.DataFrame(populations, columns=["Id", "Step", "Pop"])
     parent_tree_df = pd.DataFrame(parent_tree, columns=["ParentId", "ChildId"])
 
-    with pytest.raises(ValueError):
-        _ = process_data(populations_df, parent_tree_df)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    fish_plot(*process_data(populations_df, parent_tree_df), ax=ax)
+    plt.close(fig)
 
 
 def test_pyfish_missing_entries_for_interpolation_error():

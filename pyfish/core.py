@@ -81,15 +81,35 @@ def _create_ordering_centered(cur_tree, cur_clone):
     return res
 
 
-def _build_tree(parent_df):
+def _build_tree(parent_df, pops_df=None):
     """Create a dict-based tree where for each parent there is a list of children."""
     parents = parent_df["ParentId"].unique()
     children = parent_df["ChildId"].unique()
+    tree_ids = np.union1d(parents, children)
     root_list = np.setdiff1d(parents, children)
-    if len(root_list) != 1:
+
+    # Find population IDs not mentioned in the parent tree at all
+    if pops_df is not None:
+        pop_ids = pops_df["Id"].unique()
+        orphans = np.setdiff1d(pop_ids, tree_ids)
+        root_list = np.union1d(root_list, orphans)
+
+    if len(root_list) == 0:
         raise ValueError("Failed to determine root. "
-                        "There must be exactly one node with no parent in the parent tree.")
-    root_id = root_list[0]
+                        "There must be at least one node with no parent in the parent tree.")
+    if len(root_list) == 1:
+        root_id = root_list[0]
+    else:
+        # Multiple roots: create a synthetic root that parents all of them
+        all_ids = np.union1d(tree_ids, root_list)
+        root_id = int(all_ids.max()) + 1
+        synthetic_rows = pd.DataFrame({
+            "ParentId": root_id,
+            "ChildId": root_list,
+        })
+        parent_df = pd.concat([parent_df, synthetic_rows], ignore_index=True)
+        children = parent_df["ChildId"].unique()
+
     ids = np.concatenate([[root_id], children])
 
     tree = {cid: list(children) for cid in ids if len(
@@ -211,7 +231,7 @@ def process_data(pops_df, parent_df,
         pop_max = None
 
     # Build parental relationship
-    tree, ids, root_id = _build_tree(parent_df)
+    tree, ids, root_id = _build_tree(parent_df, pops_df)
     samples = pops_df['Id'].unique()
     ordering_func = _create_ordering if separate else _create_ordering_centered
     ordering = ordering_func(tree, -1 if absolute else root_id)

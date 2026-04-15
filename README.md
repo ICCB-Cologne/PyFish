@@ -74,7 +74,7 @@ An example parent tree:
 | 1        | 2       |
 | 0        | 3       | 
 
-**Note: there must be exactly one node in the parent tree that has no parent. This is the root (0 in the example above).**
+**Note: If multiple nodes have no parent, or if population IDs are not listed in the parent tree, a synthetic root with zero population is automatically created to parent them all.**
 
 
 ## Tool 
