@@ -146,8 +146,6 @@ Fills in missing values by interpolation.
 Smooths the filled areas using piecewise Hermite interpolation, producing gentle S-curve transitions between steps.
 Also adds a gray background and centers the plot when the population is empty at the first step.
 
-**NOTE: `--curved` and `--smooth` are mutually exclusive and cannot be used together.**
-
 | Base                          | --curved                          |
 |-------------------------------|-----------------------------------|
 | ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/test.png) | ![Curved plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/curved.png) |
