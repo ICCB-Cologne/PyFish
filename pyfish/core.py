@@ -47,16 +47,34 @@ def _stackplot(x, *args, ax=None, colors=None, labels=(), **kwargs):
 
 
 def _create_ordering(cur_tree, cur_clone):
-    """Create index for population DataFrame.
+    """Create index for population DataFrame (separate mode).
 
     Recursively traverses the parent tree.
-    Build a list such that children are listed between two instances of parent.
+    Build a list such that children are listed between instances of parent,
+    with parent material interleaved between each child.
     """
     res = []
     if cur_clone in cur_tree.keys():
         for child in cur_tree[cur_clone]:
             res += [cur_clone]
             res += _create_ordering(cur_tree, child)
+        res += [cur_clone]
+    else:
+        return [cur_clone]
+    return res
+
+
+def _create_ordering_centered(cur_tree, cur_clone):
+    """Create index for population DataFrame (centered mode).
+
+    Recursively traverses the parent tree.
+    Build a list such that children are listed between two instances of parent.
+    """
+    res = []
+    if cur_clone in cur_tree.keys():
+        res += [cur_clone]
+        for child in cur_tree[cur_clone]:
+            res += _create_ordering_centered(cur_tree, child)
         res += [cur_clone]
     else:
         return [cur_clone]
@@ -116,7 +134,7 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=No
 
 def process_data(pops_df, parent_df,
                  first_step=None, last_step=None, interpolation=-1, absolute=False, smooth=-1, seed=0,
-                 cmap_name="rainbow", color_by=None):
+                 cmap_name="rainbow", color_by=None, separate=False):
     """Load data required for plotting.
 
     Args:
@@ -129,6 +147,7 @@ def process_data(pops_df, parent_df,
         smooth (int, optional): Window for Gaussian smoothing. Defaults to -1 (no smoothing).
         seed (int, optional): Seed used for coloring. Defaults to 0.
         cmap_name (str, optional): Matplotlib colormap. Defaults to None.
+        separate (bool, optional): Place children equidistant from each other. Defaults to False.
 
     Returns:
         pd.DataFrame: DataFrame with population information
@@ -194,7 +213,8 @@ def process_data(pops_df, parent_df,
     # Build parental relationship
     tree, ids, root_id = _build_tree(parent_df)
     samples = pops_df['Id'].unique()
-    ordering = _create_ordering(tree, -1 if absolute else root_id)
+    ordering_func = _create_ordering if separate else _create_ordering_centered
+    ordering = ordering_func(tree, -1 if absolute else root_id)
     ordering = [x for x in ordering if x in samples or x == -1 and absolute]
 
     pops_stack = pops_table.loc[ordering].astype(float)

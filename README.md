@@ -203,6 +203,15 @@ Specifies the seed for the randomization of colors.
 |-------------------------------|-----------------------------------|
 | ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/seed.png) |
 
+### `-E, --separate`
+
+Places children equidistant from each other within their parent band.
+By default, children emerge from the center of the parent.
+
+| Base                          | --separate                        |
+|-------------------------------|-----------------------------------|
+| ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Separate plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/separate.png) |
+
 ### `-W, --width int+`, `-H, --height int+`
 
 Specifies the dimensions for the output image. The size is including the axes' labels.

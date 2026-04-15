@@ -38,6 +38,8 @@ def run():
                         help="Output image height")
     parser.add_argument("-V", "--curved", dest="curved", action="store_true", default=False,
                         help="Smooth filled areas with curved interpolation.")
+    parser.add_argument("-E", "--separate", dest="separate", action="store_true", default=False,
+                        help="Place children equidistant from each other instead of centered.")
 
     # Read
     args = parser.parse_args()
@@ -48,7 +50,7 @@ def run():
     # Compute
     data = process_data(populations_df, parent_tree_df, args.first_step, args.last_step,
                         args.interpolation, args.absolute, args.smooth, args.seed, args.cmap,
-                        args.color_by)
+                        args.color_by, args.separate)
 
     # Plot
     setup_figure(args.width, args.height, args.absolute)

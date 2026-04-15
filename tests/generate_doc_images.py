@@ -92,6 +92,11 @@ def generate_all():
     fish_plot(*process_data(test_pops_df, test_tree_df, seed=2022))
     _save("seed.png")
 
+    # separate.png — --separate
+    setup_figure()
+    fish_plot(*process_data(test_pops_df, test_tree_df, separate=True))
+    _save("separate.png")
+
     print(f"Generated images in {DOC_DIR}")
 
 
