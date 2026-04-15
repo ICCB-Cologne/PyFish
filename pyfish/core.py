@@ -150,8 +150,8 @@ def process_data(pops_df, parent_df,
     if interpolation > 0:
         if pops_table.shape[1] > 50:
             print("WARNING: interpolation is not recommened for large data")
-        pops_table[first_step].fillna(0, inplace=True)
-        pops_table[last_step].fillna(0, inplace=True)
+        pops_table[first_step] = pops_table[first_step].fillna(0)
+        pops_table[last_step] = pops_table[last_step].fillna(0)
 
         if (~pops_table.isna()).sum(axis=1).min() - 1 < interpolation:
             raise ValueError(f"For interpolation order {interpolation}, the iput data has not "
@@ -168,6 +168,11 @@ def process_data(pops_df, parent_df,
         pops_table_interpolate[linear_interpolation <= 0] = 0
 
         pops_table = pops_table_interpolate
+
+    elif interpolation == 0:
+        pops_table[first_step] = pops_table[first_step].fillna(0)
+        pops_table[last_step] = pops_table[last_step].fillna(0)
+        pops_table = pops_table.interpolate(axis=1, method='linear').fillna(0)
 
     else:
         pops_table = pops_table.fillna(0)

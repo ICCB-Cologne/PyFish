@@ -132,12 +132,23 @@ Plots absolute population counts at each step.
 
 ### `-I, --interpolate int`
 
-Fills in missing values by interpolation by a polynomial of the given degree. 
-If a value is not given, each population is set to 0 at the first and last step.
+Fills in missing values by interpolation.
+* A negative value (default) fills missing values with 0.
+* `0` uses linear interpolation between known data points.
+* A positive value uses polynomial (spline) interpolation of the given degree.
 
 | Base                          | --interpolate 2                                |
 |-------------------------------|------------------------------------------------|
 | ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/test.png) | ![Interpolated plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/interpolation.png) |
+
+### `-V, --curved`
+
+Smooths the filled areas using piecewise Hermite interpolation, producing gentle S-curve transitions between steps.
+Also adds a gray background and centers the plot when the population is empty at the first step.
+
+| Base                          | --curved                          |
+|-------------------------------|-----------------------------------|
+| ![Base plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/test.png) | ![Curved plot](https://bytebucket.org/schwarzlab/pyfish/raw/main/doc/curved.png) |
 
 ### `-S, --smooth float`
 

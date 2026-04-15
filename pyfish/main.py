@@ -16,8 +16,8 @@ def run():
                         help="Output image filepath. The format must support alpha channels.")
     parser.add_argument('-a', '--absolute', dest="absolute", action="store_true", default=False,
                         help='Plot the populations in absolute numbers rather than normalized.')
-    parser.add_argument("-I", "--interpolation", dest='interpolation', type=int, default=0,
-                        help="Order of interpolation for empty data (0 means no interpolation).")
+    parser.add_argument("-I", "--interpolation", dest='interpolation', type=int, default=-1,
+                        help="Order of interpolation for empty data (default is no interpolation).")
     parser.add_argument("-S", "--smooth", dest="smooth", type=float, default=None,
                         help="STDev for Gaussian convolutional filter. The higher the value "
                              "the smoother the resulting bands will be. Recommended is around 1.0.")
@@ -35,7 +35,7 @@ def run():
                         help="Output image width")
     parser.add_argument("-H", "--height", dest="height", type=int, default=1080,
                         help="Output image height")
-    parser.add_argument("--curved", dest="curved", action="store_true", default=False,
+    parser.add_argument("-V", "--curved", dest="curved", action="store_true", default=False,
                         help="Smooth filled areas with curved interpolation.")
 
     # Read
