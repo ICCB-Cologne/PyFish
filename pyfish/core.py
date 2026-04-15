@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import cm
+from scipy.interpolate import PchipInterpolator
 from scipy.ndimage import gaussian_filter
 
 
@@ -170,9 +171,6 @@ def process_data(pops_df, parent_df,
 
     else:
         pops_table = pops_table.fillna(0)
-        if not absolute and (pops_table == 0).all(axis=0).any():
-            raise ValueError("If --interpolation is not set and --absolute is not set you cannot "
-                             "have missing Steps")
 
     steps = pops_table.columns
 
@@ -215,15 +213,27 @@ def setup_figure(width=1920, height=1080, absolute=False):
     plt.ylabel('population' if absolute else 'proportion')
 
 
-def fish_plot(pops_stack, steps, colors=None, pop_max=None, ax=None):
+def fish_plot(pops_stack, steps, colors=None, pop_max=None, ax=None, curved=False):
     """Plot the actual fish plot."""
+    if curved:
+        steps_arr = np.asarray(steps, dtype=float)
+        n_points = max(len(steps_arr) * 100, 500)
+        steps_smooth = np.linspace(steps_arr[0], steps_arr[-1], n_points)
+        smooth_rows = []
+        for _, row in pops_stack.iterrows():
+            interp = PchipInterpolator(steps_arr, row.values.astype(float))
+            smooth_rows.append(np.maximum(interp(steps_smooth), 0))
+        pops_stack = np.array(smooth_rows)
+        steps = steps_smooth
+
     _stackplot(steps, pops_stack, colors=colors, ax=ax)
 
     if ax is None:
         ax = plt.gca()
 
-    first_step = pops_stack.columns[0]
-    last_step = pops_stack.columns[-1]
+    steps_arr = np.asarray(steps)
+    first_step = steps_arr[0]
+    last_step = steps_arr[-1]
     ax.set_xlim(first_step, last_step)
     ax.set_ylim(0, 1)
     label_text = np.round(np.abs(np.arange(-0.5, 0.6, 0.1)), 1)

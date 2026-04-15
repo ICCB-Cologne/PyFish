@@ -35,6 +35,8 @@ def run():
                         help="Output image width")
     parser.add_argument("-H", "--height", dest="height", type=int, default=1080,
                         help="Output image height")
+    parser.add_argument("--curved", dest="curved", action="store_true", default=False,
+                        help="Smooth filled areas with curved interpolation.")
 
     # Read
     args = parser.parse_args()
@@ -48,7 +50,7 @@ def run():
 
     # Plot
     setup_figure(args.width, args.height, args.absolute)
-    fish_plot(*data)
+    fish_plot(*data, curved=args.curved)
     plt.savefig(args.output)
 
 
