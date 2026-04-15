@@ -54,8 +54,8 @@ def _create_ordering(cur_tree, cur_clone):
     """
     res = []
     if cur_clone in cur_tree.keys():
-        res += [cur_clone]
         for child in cur_tree[cur_clone]:
+            res += [cur_clone]
             res += _create_ordering(cur_tree, child)
         res += [cur_clone]
     else:
@@ -192,10 +192,11 @@ def process_data(pops_df, parent_df,
     ordering = _create_ordering(tree, -1 if absolute else root_id)
     ordering = [x for x in ordering if x in samples or x == -1 and absolute]
 
-    pops_stack = pops_table.loc[ordering]
+    pops_stack = pops_table.loc[ordering].astype(float)
     val, count = np.unique(pops_stack.index, return_counts=True)
-    doubles = val[count > 1]
-    pops_stack.loc[doubles] = pops_stack.loc[doubles] / 2
+    for v, c in zip(val, count):
+        if c > 1:
+            pops_stack.loc[v] = pops_stack.loc[v] / c
 
     pops_sum = pops_stack.sum(axis=0)
     pops_sum[pops_sum == 0] = 1
@@ -215,18 +216,48 @@ def setup_figure(width=1920, height=1080, absolute=False):
 
 def fish_plot(pops_stack, steps, colors=None, pop_max=None, ax=None, curved=False):
     """Plot the actual fish plot."""
+    # Convert to numpy for centering/padding logic
+    if isinstance(pops_stack, pd.DataFrame):
+        data = pops_stack.values.astype(float)
+    else:
+        data = np.asarray(pops_stack, dtype=float)
+
+    # Compute centering: collapse to y=0.5 when a step has no population
+    col_sum = data.sum(axis=0)
+    has_data = (col_sum > 0).astype(float)
+    offset = (1 - has_data) / 2
+
+    # Scale data rows so they collapse to 0 when no data at a step
+    data = data * has_data
+
+    # Add gray padding rows: bottom (offset) and top (offset)
+    data_with_pad = np.vstack([offset, data, offset])
+
+    # Add gray colors for the two padding rows
+    gray = np.array([[0.78, 0.78, 0.78, 1.0]])
+    if colors is not None:
+        colors = np.vstack([gray, colors, gray])
+
     if curved:
         steps_arr = np.asarray(steps, dtype=float)
-        n_points = max(len(steps_arr) * 100, 500)
-        steps_smooth = np.linspace(steps_arr[0], steps_arr[-1], n_points)
-        smooth_rows = []
-        for _, row in pops_stack.iterrows():
-            interp = PchipInterpolator(steps_arr, row.values.astype(float))
-            smooth_rows.append(np.maximum(interp(steps_smooth), 0))
-        pops_stack = np.array(smooth_rows)
-        steps = steps_smooth
+        n_seg = len(steps_arr) - 1
+        n_per_seg = max(500 // n_seg, 100)
+        all_x = []
+        all_rows = [[] for _ in range(data_with_pad.shape[0])]
+        for si in range(n_seg):
+            endpoint = (si == n_seg - 1)
+            t = np.linspace(0, 1, n_per_seg, endpoint=endpoint)
+            s = t * t * (3 - 2 * t)  # Hermite smoothstep
+            xp = steps_arr[si] + t * (steps_arr[si + 1] - steps_arr[si])
+            all_x.append(xp)
+            for ri in range(data_with_pad.shape[0]):
+                v_L = data_with_pad[ri, si]
+                v_R = data_with_pad[ri, si + 1]
+                all_rows[ri].append(np.maximum(v_L + s * (v_R - v_L), 0))
+        steps = np.concatenate(all_x)
+        data_with_pad = np.array([np.concatenate(r) for r in all_rows])
 
-    _stackplot(steps, pops_stack, colors=colors, ax=ax)
+    _stackplot(steps, data_with_pad, colors=colors, ax=ax)
 
     if ax is None:
         ax = plt.gca()
