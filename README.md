@@ -230,4 +230,10 @@ PyFish is available under the MIT License.
 To actively develop the package, we recommend to install pyfish in development mode using pip `pip install -e . --user`.
 In order to run the main routine from the command line without installing it first, run `python -m pyfish.main -- tests/populations.csv tests/parent_tree.csv out.png`.
 
-To trigger testing, run `pytest -v .`.
+### Tests
+
+To trigger testing, run `pytest -v .` 
+
+### Docs
+
+To generate the docs, run `python ./tests/generate_doc_images.py` 
