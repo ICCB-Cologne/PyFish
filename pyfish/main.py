@@ -16,7 +16,7 @@ def run():
                         help="Output image filepath. The format must support alpha channels.")
     parser.add_argument('-a', '--absolute', dest="absolute", action="store_true", default=False,
                         help='Plot the populations in absolute numbers rather than normalized.')
-    parser.add_argument("-I", "--interpolation", dest='interpolation', type=int, default=-1,
+    parser.add_argument("-I", "--interpolate", dest='interpolate', type=int, default=-1,
                         help="Order of interpolation for empty data (default is no interpolation).")
     parser.add_argument("-S", "--smooth", dest="smooth", type=float, default=-1,
                         help="STDev for Gaussian convolutional filter. The higher the value "
@@ -49,7 +49,7 @@ def run():
 
     # Compute
     data = process_data(populations_df, parent_tree_df, args.first_step, args.last_step,
-                        args.interpolation, args.absolute, args.smooth, args.seed, args.cmap,
+                        args.interpolate, args.absolute, args.smooth, args.seed, args.cmap,
                         args.color_by, args.separate)
 
     # Plot

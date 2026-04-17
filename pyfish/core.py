@@ -123,10 +123,10 @@ def _build_tree(parent_df, pops_df=None):
 def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=None):
     np.random.seed(seed)
     try:
-        cmap = cm.get_cmap(cmap_name)
-    except ValueError:
+        cmap = plt.colormaps[cmap_name]
+    except (KeyError, ValueError):
         print("WARNING: colormap not recognized, setting to default")
-        cmap = cm.get_cmap("rainbow")
+        cmap = plt.colormaps["rainbow"]
 
     if color_by is not None:
         # color by separate column in pops_df
@@ -153,7 +153,7 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=No
 
 
 def process_data(pops_df, parent_df,
-                 first_step=None, last_step=None, interpolation=-1, absolute=False, smooth=-1, seed=0,
+                 first_step=None, last_step=None, interpolate=-1, absolute=False, smooth=-1, seed=0,
                  cmap_name="rainbow", color_by=None, separate=False):
     """Load data required for plotting.
 
@@ -162,7 +162,7 @@ def process_data(pops_df, parent_df,
         parent_df (DataFrame): Parent-child relationships (ParentID: +int, ChildID: +int)
         first_step (int, optional): First step to plot. Defaults to None.
         last_step (int, optional): Last step to plot. Defaults to None.
-        interpolation (int, optional): Order of interpolation. Defaults to 0.
+        interpolate (int, optional): Order of interpolate. Defaults to 0.
         absolute (bool, optional): Does not normalize data if set True. Defaults to False.
         smooth (int, optional): Window for Gaussian smoothing. Defaults to -1 (no smoothing).
         seed (int, optional): Seed used for coloring. Defaults to 0.
@@ -186,29 +186,29 @@ def process_data(pops_df, parent_df,
     # populations dataframe processing
     pops_table = pops_df.set_index(['Id', 'Step'])['Pop'].unstack('Step')
 
-    if interpolation > 0:
+    if interpolate > 0:
         if pops_table.shape[1] > 50:
-            print("WARNING: interpolation is not recommened for large data")
+            print("WARNING: interpolate is not recommened for large data")
         pops_table[first_step] = pops_table[first_step].fillna(0)
         pops_table[last_step] = pops_table[last_step].fillna(0)
 
-        if (~pops_table.isna()).sum(axis=1).min() - 1 < interpolation:
-            raise ValueError(f"For interpolation order {interpolation}, the iput data has not "
-                             f"enough datapoints (at least {interpolation + 1} per sample)")
+        if (~pops_table.isna()).sum(axis=1).min() - 1 < interpolate:
+            raise ValueError(f"For interpolate order {interpolate}, the iput data has not "
+                             f"enough datapoints (at least {interpolate + 1} per sample)")
 
         larger_pops_table = pd.DataFrame(index=pops_table.index,
                                          columns=np.arange(first_step, last_step - 0.1, 0.1))
         larger_pops_table[pops_table.columns.astype(float)] = pops_table
         larger_pops_table = larger_pops_table.astype(float)
 
-        linear_interpolation = larger_pops_table.interpolate(axis=1, method='linear')
+        linear_interpolate = larger_pops_table.interpolate(axis=1, method='linear')
         pops_table_interpolate = larger_pops_table.interpolate(axis=1, method='spline',
-                                                               order=interpolation)
-        pops_table_interpolate[linear_interpolation <= 0] = 0
+                                                               order=interpolate)
+        pops_table_interpolate[linear_interpolate <= 0] = 0
 
         pops_table = pops_table_interpolate
 
-    elif interpolation == 0:
+    elif interpolate == 0:
         pops_table[first_step] = pops_table[first_step].fillna(0)
         pops_table[last_step] = pops_table[last_step].fillna(0)
         pops_table = pops_table.interpolate(axis=1, method='linear').fillna(0)

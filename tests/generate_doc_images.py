@@ -16,7 +16,9 @@ TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def _save(name, width=1920, height=1080):
-    plt.savefig(os.path.join(DOC_DIR, name))
+    path = os.path.join(DOC_DIR, name)
+    print(f"Saving {path}...")
+    plt.savefig(path)
     plt.close()
 
 
@@ -49,7 +51,7 @@ def generate_all():
 
     # interpolation.png — --interpolate 2
     setup_figure()
-    fish_plot(*process_data(example_pops_df, example_tree_df, interpolation=2))
+    fish_plot(*process_data(example_pops_df, example_tree_df, interpolate=2))
     _save("interpolation.png")
 
     # curved.png — --curved
