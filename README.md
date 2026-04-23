@@ -77,6 +77,7 @@ An example parent tree:
 
 **Note: If multiple nodes have no parent, or if population IDs are not listed in the parent tree, a synthetic root with zero population is automatically created to parent them all.**
 
+A synthetic root is always centered and has a width zero, even when using curved or separate modes.
 
 ## Tool 
 
@@ -91,6 +92,8 @@ Additional execution parameters are described below.
 ## Library
 
 The populations and parent_tree tables can be constructed directly as dataframes.
+
+A worked API example covering common options (raw, curved, separated, interpolated, and colormap comparison) is provided in [`example.ipynb`](example.ipynb).
 
 The library contains three public functions:
 

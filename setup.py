@@ -19,6 +19,7 @@ setup(
     keywords="plot genomics visualization",
     python_requires='>=3.8',
     packages=['pyfish'],
+    exclude_package_data={'': ['*.ipynb']},
     entry_points={
         'console_scripts': [
             'pyfish = pyfish.main:run',
