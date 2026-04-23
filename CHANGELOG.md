@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2026-04-23
+
+### Fixed
+- `--curved` and `--smooth` are now enforced as mutually exclusive in the CLI.
+- Passing an invalid `color_by` column name now raises a clear `ValueError`.
+
 ## [1.1.0] - 2026-04-15
 
 ### Added

@@ -18,10 +18,16 @@ def run():
                         help='Plot the populations in absolute numbers rather than normalized.')
     parser.add_argument("-I", "--interpolate", dest='interpolate', type=int, default=-1,
                         help="Order of interpolation for empty data (default is no interpolation).")
-    parser.add_argument("-S", "--smooth", dest="smooth", type=float, default=-1,
+
+    smooth_curved = parser.add_mutually_exclusive_group()
+    smooth_curved.add_argument("-S", "--smooth", dest="smooth", type=float, default=-1,
                         help="STDev for Gaussian convolutional filter. The higher the value "
                              "the smoother the resulting bands will be. Recommended is around 1.0. "
                              "A negative value disables smoothing (default).")
+    smooth_curved.add_argument("-V", "--curved", dest="curved", action="store_true", default=False,
+                        help="Smooth filled areas with curved interpolation. "
+                             "Mutually exclusive with --smooth.")
+
     parser.add_argument("-F", "--first", dest="first_step", type=int,
                         help="The step to start plotting from.")
     parser.add_argument("-L", "--last", dest="last_step", type=int,
@@ -29,15 +35,13 @@ def run():
     parser.add_argument("-R", "--seed", dest="seed", type=int,
                         help="Random seed for selection of colors.", default=42)
     parser.add_argument("-M", "--cmap", type=str, default="rainbow",
-                        help="Colormap to use. Has to be a matplotlib colormap Uses rainbow by default")
+                        help="Colormap to use. Has to be a matplotlib colormap. Uses rainbow by default.")
     parser.add_argument("-C", "--color-by", type=str, default=None,
-                        help="Color the fishplot based on this column of the populations dataframe")
+                        help="Color the fishplot based on this column of the populations dataframe.")
     parser.add_argument("-W", "--width", dest="width", type=int, default=1920,
-                        help="Output image width")
+                        help="Output image width.")
     parser.add_argument("-H", "--height", dest="height", type=int, default=1080,
-                        help="Output image height")
-    parser.add_argument("-V", "--curved", dest="curved", action="store_true", default=False,
-                        help="Smooth filled areas with curved interpolation.")
+                        help="Output image height.")
     parser.add_argument("-E", "--separate", dest="separate", action="store_true", default=False,
                         help="Place children equidistant from each other instead of centered.")
 

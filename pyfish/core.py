@@ -14,7 +14,7 @@ def _stackplot(x, *args, ax=None, colors=None, labels=(), **kwargs):
     Taken largely from the matplotlib implementation except that the keywords `edgecolor` and
     `where` are provided to `fill_between`
     """
-    y = np.row_stack(args)
+    y = np.vstack(args)
     labels = iter(labels)
 
     if ax is None:
@@ -130,7 +130,8 @@ def _create_colors(ids, root_id, ordering, seed, cmap_name, pops_df, color_by=No
 
     if color_by is not None:
         # color by separate column in pops_df
-        assert color_by in pops_df.columns, "'color_by' has to be a column in pops_df"
+        if color_by not in pops_df.columns:
+            raise ValueError(f"'color_by' column '{color_by}' not found in pops_df")
 
         min_value = pops_df[color_by].min()
         unique_colors = cmap(np.linspace(0, 1, pops_df[color_by].max() - min_value + 1))
@@ -162,7 +163,7 @@ def process_data(pops_df, parent_df,
         parent_df (DataFrame): Parent-child relationships (ParentID: +int, ChildID: +int)
         first_step (int, optional): First step to plot. Defaults to None.
         last_step (int, optional): Last step to plot. Defaults to None.
-        interpolate (int, optional): Order of interpolate. Defaults to 0.
+        interpolate (int, optional): Order of interpolate. Defaults to -1 (fill with zeros).
         absolute (bool, optional): Does not normalize data if set True. Defaults to False.
         smooth (int, optional): Window for Gaussian smoothing. Defaults to -1 (no smoothing).
         seed (int, optional): Seed used for coloring. Defaults to 0.

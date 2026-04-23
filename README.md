@@ -40,7 +40,7 @@ The program takes two tables:
 ### Populations
 
 Populations table has the schema `(Id: +int, Step: +int, Pop: +int)`, where:
-* `Id` is a numerical identifier of a subgroup`,
+* `Id` is a numerical identifier of a subgroup,
 * `Step` is a natural ordinal describing the logical time when the population is measured,
 * `Pop` is the size of the population of the subgroup at the given step.
 
@@ -182,7 +182,7 @@ Default colormap is rainbow.
 |-------------------------------|----------------------------------|
 | ![Base plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/base.png) | ![Smoothed plot](https://raw.githubusercontent.com/ICCB-Cologne/PyFish/main/doc/map.png) |
 
-### `-C, --color_by string`
+### `-C, --color-by string`
 
 Color the ids based on a separate column in the populations.csv file.
 It will select the first value of the column per id, so the value should be constant for all entries with the same id.
@@ -220,7 +220,7 @@ Please cite as: *Adam Streck, Tom L Kaufmann, Roland F Schwarz, SMITH: Spatially
 
 ## Credits
 Authors: Adam Streck, Tom L. Kaufmann    
-Current contact: [Adam Streck](mailto:adam.streck@gmail.com?subject=PyFish)    
+Current contact: [Adam Streck](mailto:adam.streck@iccb-cologne.org?subject=PyFish)    
 Supervised by: Roland F. Schwarz
 
 ## License
